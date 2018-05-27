@@ -13,11 +13,11 @@ package br.com.jpe.script.crd.utils;
 public class TemplateAttribute {
 
     /** Field name */
-    private String nome;
+    private String name;
     /** Field description */
-    private String descricao;
+    private String description;
     /** Field type */
-    private String tipo;
+    private String type;
     /** Field is Primary Key? */
     private boolean isPk;
     /** Field is Autoincremented? */
@@ -29,69 +29,69 @@ public class TemplateAttribute {
      * @param f
      */
     public TemplateAttribute(Field f) {
-        nome = Text.uncapitalize(f.getField());
-        descricao = f.getComment();
-        tipo = FieldConverter.get(f.getType());
+        name = Text.uncapitalize(f.getField());
+        description = f.getComment();
+        type = FieldConverter.get(f.getType());
         isPk = f.isPk();
         autoIncrement = f.isAutoIncrement();
     }
 
     /**
-     * Gets
+     * Gets the name
      *
      * @return String
      */
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Sets
+     * Sets the name
      *
-     * @param nome
+     * @param name
      */
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * Gets
-     *
-     * @return String
-     */
-    public String getDescricao() {
-        return descricao;
-    }
-
-    /**
-     * Sets
-     *
-     * @param descricao
-     */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    /**
-     * Gets
+     * Gets the description
      *
      * @return String
      */
-    public String getTipo() {
-        return tipo;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Sets
+     * Sets the description
      *
-     * @param tipo
+     * @param description
      */
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * Returns true if
+     * Gets the type
+     *
+     * @return String
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Sets the type
+     *
+     * @param type
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Returns true if it's part of the primary key
      *
      * @return boolean
      */
@@ -100,7 +100,7 @@ public class TemplateAttribute {
     }
 
     /**
-     * Sets
+     * Sets if it's part of the primary key
      *
      * @param isPk
      */
@@ -109,7 +109,7 @@ public class TemplateAttribute {
     }
 
     /**
-     * Returns true if
+     * Returns true if it's auto incrementated
      *
      * @return boolean
      */
@@ -118,7 +118,7 @@ public class TemplateAttribute {
     }
 
     /**
-     * Sets
+     * Sets if it's auto incrementated
      *
      * @param autoIncrement
      */

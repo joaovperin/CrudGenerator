@@ -84,7 +84,7 @@ public abstract class AbstractTemplateProcessor implements TemplateProcessor {
 
             // If writes on file
             if (Boolean.valueOf(properties.getProperty("writeonfile", String.valueOf(properties.getProperty("basepath") != null)))) {
-                try (Writer file = new FileWriter(getOutputFile(pack, entity.getNome(), prefix, suffix))) {
+                try (Writer file = new FileWriter(getOutputFile(pack, entity.getName(), prefix, suffix))) {
                     template.process(data, file);
                     file.flush();
                 }

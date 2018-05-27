@@ -15,38 +15,38 @@ import java.util.List;
  */
 public class TemplateEntity {
 
-    /** Nome da tabela no banco */
+    /** Table name on the database */
     private String tableName;
-    /** Tipo de tabela */
+    /** Table type */
     private String tableType;
-    /** Nome da tabela para exibição */
-    private String nome;
-    /** Índice do último atributo chave */
+    /** Table name for showing */
+    private String name;
+    /** Index of the last attribute from the primary key */
     private int lastKeyAtt;
-    /** Lista de atributos da tabela */
+    /** Attributes list of the table */
     private List<TemplateAttribute> attrs;
 
     /**
-     * Constrói uma entidade à partir de uma tabela MySQL
+     * Builds an entity from a MySQL table
      *
-     * @param t Tabela MySQL
+     * @param table MySQL Table
      */
-    public TemplateEntity(Table t) {
-        attrs = new ArrayList<>();
-        lastKeyAtt = -1;
-        for (Field f : t.getTableFields()) {
+    public TemplateEntity(Table table) {
+        this.attrs = new ArrayList<>();
+        this.lastKeyAtt = -1;
+        table.getTableFields().forEach((f) -> {
             attrs.add(new TemplateAttribute(f));
             if (f.isPk()) {
                 lastKeyAtt++;
             }
-        }
-        tableName = t.getName();
-        tableType = t.getType();
-        nome = Text.toCamelCase(t.getName(), true);
+        });
+        this.tableName = table.getName();
+        this.tableType = table.getType();
+        this.name = Text.toCamelCase(table.getName(), true);
     }
 
     /**
-     * Retorna o nome da tabela
+     * Gets the table name
      *
      * @return String
      */
@@ -55,7 +55,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Define o nome da tabela
+     * Sets the table name
      *
      * @param tableName
      */
@@ -64,7 +64,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Retorna o tipo da tabela
+     * Gets the table type
      *
      * @return String
      */
@@ -73,7 +73,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Define o tipo da tabela
+     * Gets the table type
      *
      * @param tableType
      */
@@ -82,7 +82,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Retorna verdadeiro se for uma View
+     * Returns true if the table is a view
      *
      * @return boolean
      */
@@ -91,7 +91,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Retorna verdadeiro se for uma Tabela
+     * Returns true if the table is a table
      *
      * @return boolean
      */
@@ -100,25 +100,25 @@ public class TemplateEntity {
     }
 
     /**
-     * Retorna o nome da tabela no banco
+     * Gets the database table name
      *
      * @return String
      */
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Define o nome da tabela no banco
+     * Sets the database table name
      *
-     * @param nome
+     * @param name
      */
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * Retorna os atributos da tabela
+     * Gets the table attributes list
      *
      * @return List
      */
@@ -127,7 +127,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Define os atributos da tabela
+     * Sets the table attributes list
      *
      * @param attrs
      */
@@ -136,7 +136,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Adiciona uma tributo na tabela
+     * Adds a tabble attribute to the list
      *
      * @param attr
      */
@@ -145,7 +145,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Retorna o índice do último atributo chave
+     * Gets the last key attribute index
      *
      * @return int
      */
@@ -154,7 +154,7 @@ public class TemplateEntity {
     }
 
     /**
-     * Sets
+     * Sets the last key attribute index
      *
      * @param lastKeyAtt
      */
