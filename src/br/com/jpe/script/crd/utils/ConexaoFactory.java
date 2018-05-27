@@ -63,7 +63,7 @@ public final class ConexaoFactory {
     private static void loadProperties() {
         CONN_PTS.clear();
         CONN_PTS.setProperty("user", "PortoZoca");
-        CONN_PTS.setProperty("password", "***CENSORED***");
+        CONN_PTS.setProperty("password", "PortoZoca1234");
     }
 
     /**

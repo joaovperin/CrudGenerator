@@ -3,33 +3,49 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.jpe.script.crd.utils;
+package br.com.jpe.script.crd.processors;
 
+import br.com.jpe.script.crd.utils.GeneratorException;
+import br.com.jpe.script.crd.utils.Table;
+import br.com.jpe.script.crd.utils.TemplateEntity;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.Version;
+import java.util.List;
 
 /**
- * TemplateProcessor Class
+ * TemplateProcessor V1 Class
  *
  * @author joaovperin
  */
-public class TemplateProcessor {
+public class TemplateProcessorV1 extends AbstractTemplateProcessor {
 
-    private static final String TPL_FOLDER = "res/templates/";
+    @Override
+    public void processTables(List<Table> tables) {
+        tables.forEach((t) -> {
+            criaTplPk("br.jpe.dallahits.gen", new TemplateEntity(t));
+            criaTplBean("br.jpe.dallahits.gen", new TemplateEntity(t));
+            criaTplDAO("br.jpe.dallahits.gen", new TemplateEntity(t));
+            criaTplEntidade("br.jpe.dallahits.gen", new TemplateEntity(t));
+        });
+    }
+
+    @Override
+    public void processViews(List<Table> views) {
+        views.forEach((t) -> {
+            criaTplBean("br.jpe.dallahits.gen.view", new TemplateEntity(t));
+            criaTplViewDAO("br.jpe.dallahits.gen.view", new TemplateEntity(t));
+            criaTplEntidade("br.jpe.dallahits.gen.view", new TemplateEntity(t));
+        });
+    }
+
+    private static final String TPL_FOLDER = "res/templates/v1/";
 
     public void criaTplPk(String pack, TemplateEntity entidade) {
         try {
             Template template = getConfig().getTemplate(TPL_FOLDER.concat("tpPk.ftl"));
             execute(pack, entidade, template, "Pk");
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new GeneratorException(e);
         }
     }
@@ -38,7 +54,7 @@ public class TemplateProcessor {
         try {
             Template template = getConfig().getTemplate(TPL_FOLDER.concat("tpBean.ftl"));
             execute(pack, entidade, template, "Bean");
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new GeneratorException(e);
         }
     }
@@ -47,7 +63,7 @@ public class TemplateProcessor {
         try {
             Template template = getConfig().getTemplate(TPL_FOLDER.concat("tpDAO.ftl"));
             execute(pack, entidade, template, "DAO");
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new GeneratorException(e);
         }
     }
@@ -63,7 +79,7 @@ public class TemplateProcessor {
         try {
             Template template = getConfig().getTemplate(TPL_FOLDER.concat("tpEntidade.ftl"));
             execute(pack, entidade, template, "Entidade");
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new GeneratorException(e);
         }
     }
@@ -80,55 +96,9 @@ public class TemplateProcessor {
             //Load template from source folder
             Template template = getConfig().getTemplate(TPL_FOLDER.concat("tpViewDAO.ftl"));
             execute(pack, entidade, template, "DAO");
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new GeneratorException(e);
         }
     }
 
-    /**
-     * Proccessed a template
-     *
-     * @param pack
-     * @param entidade
-     * @param template
-     * @param sufixo
-     */
-    private void execute(String pack, TemplateEntity entidade, Template template, String sufixo) {
-        execute(pack, entidade, template, "", sufixo);
-    }
-
-    /**
-     * Processa um template e gera o arquivo de saída
-     *
-     * @param pack
-     * @param entidade
-     * @param template
-     * @param prefixo
-     * @param sufixo
-     */
-    private void execute(String pack, TemplateEntity entidade, Template template, String prefix, String sufixo) {
-        try {
-            // Monta o data-model esperado pelo FreeMarker
-            Map<String, Object> data = new HashMap<>();
-            data.put("package", pack);
-            data.put("entidade", entidade);
-
-            // Saída no Console
-            Writer out = new OutputStreamWriter(System.out);
-            template.process(data, out);
-            out.flush();
-
-        } catch (IOException | TemplateException e) {
-            e.printStackTrace(System.out);
-        }
-    }
-
-    /**
-     * Retorna a configuração do Template Engine
-     *
-     * @return Configuration
-     */
-    private Configuration getConfig() {
-        return new Configuration(new Version("2.3"));
-    }
 }

@@ -8,14 +8,13 @@ package br.com.jpe.script.crd.core;
 import br.com.jpe.script.crd.utils.ConexaoFactory;
 import br.com.jpe.script.crd.utils.Field;
 import br.com.jpe.script.crd.utils.Table;
-import br.com.jpe.script.crd.utils.TemplateEntity;
-import br.com.jpe.script.crd.utils.TemplateProcessor;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Font Generator core
@@ -24,14 +23,16 @@ import java.util.List;
  */
 public class FontGenerator {
 
-    /** Source Code generator */
-    private final TemplateProcessor g;
+    /** Properties */
+    private final Properties pt;
 
     /**
-     * Default consctructor
+     * Default constructor
+     *
+     * @param properties
      */
-    public FontGenerator() {
-        this.g = new TemplateProcessor();
+    public FontGenerator(Properties properties) {
+        this.pt = properties;
     }
 
     /**
@@ -42,20 +43,10 @@ public class FontGenerator {
      */
     public void exec() throws SQLException, IOException {
         try (Connection conn = ConexaoFactory.getConnection()) {
-            String dbName = "PortoZoca_Dev";
-            // Generates the "Table" sources
-            for (Table t : getTables(conn, dbName)) {
-                g.criaTplPk("br.jpe.dallahits.gen", new TemplateEntity(t));
-                g.criaTplBean("br.jpe.dallahits.gen", new TemplateEntity(t));
-                g.criaTplDAO("br.jpe.dallahits.gen", new TemplateEntity(t));
-                g.criaTplEntidade("br.jpe.dallahits.gen", new TemplateEntity(t));
-            }
-            // Generates the "View" sources
-            for (Table t : getViews(conn, dbName)) {
-                g.criaTplBean("br.jpe.dallahits.gen.view", new TemplateEntity(t));
-                g.criaTplViewDAO("br.jpe.dallahits.gen.view", new TemplateEntity(t));
-                g.criaTplEntidade("br.jpe.dallahits.gen.view", new TemplateEntity(t));
-            }
+            String dbName = pt.getProperty("database");
+            TemplateProcessor g = TemplateProcessorFactory.get(pt.getProperty("version"), pt);
+            g.processTables(getTables(conn, dbName));
+            g.processViews(getTables(conn, dbName));
         }
     }
 
